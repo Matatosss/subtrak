@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#08080e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>SubTrack — Gérez vos abonnements</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══════════════════════════════════════════
+       AUTH SCREEN
+  ══════════════════════════════════════════ -->
+  <div id="screen-auth" class="screen">
+    <div class="auth-screen">
+      <div class="auth-bg-glow top"></div>
+      <div class="auth-bg-glow bottom"></div>
+      <div class="auth-content">
+
+        <div class="auth-logo">
+          <div class="auth-logo-icon">💳</div>
+          <div class="auth-logo-text">Sub<em>Track</em></div>
+        </div>
+
+        <h1 class="auth-headline">Maîtrisez<br>vos abonnements.</h1>
+        <p class="auth-desc">
+          Centralisez tous vos abonnements, anticipez vos renouvellements
+          et gardez le contrôle de vos dépenses.
+        </p>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login"    onclick="Auth.switchTab('login')">Connexion</button>
+          <button class="auth-tab"        data-tab="register" onclick="Auth.switchTab('register')">Inscription</button>
+        </div>
+
+        <!-- Login form -->
+        <div id="form-login">
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Email</label>
+            <input class="form-input" type="email" id="loginEmail"
+                   placeholder="vous@exemple.fr" autocomplete="email"
+                   onkeydown="if(event.key==='Enter') Auth.login()">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Mot de passe</label>
+            <input class="form-input" type="password" id="loginPassword"
+                   placeholder="••••••••" autocomplete="current-password"
+                   onkeydown="if(event.key==='Enter') Auth.login()">
+          </div>
+          <div class="form-error" id="loginError"></div>
+          <button class="btn btn-primary" onclick="Auth.login()" style="margin-top:8px">
+            Connexion →
+          </button>
+          <div class="auth-divider">
+            Nouvelle sur SubTrack ?
+            <span class="demo-link" onclick="Auth.loginDemo()">Essayer la démo</span>
+          </div>
+        </div>
+
+        <!-- Register form -->
+        <div id="form-register" class="hidden">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="regFirst">Prénom</label>
+              <input class="form-input" type="text" id="regFirst"
+                     placeholder="Alice" autocomplete="given-name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="regLast">Nom</label>
+              <input class="form-input" type="text" id="regLast"
+                     placeholder="Martin" autocomplete="family-name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Email</label>
+            <input class="form-input" type="email" id="regEmail"
+                   placeholder="vous@exemple.fr" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Mot de passe</label>
+            <input class="form-input" type="password" id="regPassword"
+                   placeholder="6 caractères minimum" autocomplete="new-password"
+                   onkeydown="if(event.key==='Enter') Auth.register()">
+          </div>
+          <div class="form-error" id="regError"></div>
+          <button class="btn btn-primary" onclick="Auth.register()" style="margin-top:8px">
+            Créer mon compte →
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       APP SCREEN
+  ══════════════════════════════════════════ -->
+  <div id="screen-app" class="screen">
+
+    <!-- ── Sticky Header ── -->
+    <header class="app-header">
+      <div class="header-row">
+        <div>
+          <div class="header-greeting" id="headerGreeting">Bonjour 👋</div>
+          <div class="header-name"     id="headerName">—</div>
+        </div>
+        <div class="header-actions">
+          <!-- Notification bell -->
+          <div class="notif-wrap">
+            <button class="btn-icon" onclick="SubModal.openNotifs()" title="Notifications">🔔</button>
+            <div class="notif-badge hidden" id="notifBadge">0</div>
+          </div>
+          <!-- Avatar -->
+          <div class="avatar" id="headerAvatar" onclick="Router.go('profile')" title="Profil">?</div>
+        </div>
+      </div>
+
+      <!-- Nav tabs -->
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-page="dashboard"     onclick="Router.go('dashboard')">
+          <span class="nav-icon">📊</span>Tableau
+        </button>
+        <button class="nav-tab"        data-page="subscriptions" onclick="Router.go('subscriptions')">
+          <span class="nav-icon">📋</span>Abonnements
+        </button>
+        <button class="nav-tab"        data-page="analytics"     onclick="Router.go('analytics')">
+          <span class="nav-icon">📈</span>Analyses
+        </button>
+        <button class="nav-tab"        data-page="profile"       onclick="Router.go('profile')">
+          <span class="nav-icon">👤</span>Profil
+        </button>
+      </nav>
+    </header>
+
+    <!-- ── Pages ── -->
+    <main>
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-content">
+          <div class="stats-grid" id="dashStats"></div>
+          <div class="section-header" style="margin-top:var(--sp-1)">
+            <div class="section-title">⚡ Prochains renouvellements</div>
+          </div>
+          <div id="dashAlerts"></div>
+          <div class="card" style="margin-top:var(--sp-5)">
+            <div class="section-title">Répartition par catégorie</div>
+            <div id="dashDonut"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBSCRIPTIONS -->
+      <div class="page" id="page-subscriptions">
+        <div class="page-content">
+          <div class="filter-scroll" id="subFilters"></div>
+          <div id="subList"></div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="page" id="page-analytics">
+        <div class="page-content">
+          <div class="period-switch">
+            <button class="period-btn active" data-period="monthly" onclick="Analytics.setPeriod('monthly')">Mensuel</button>
+            <button class="period-btn"        data-period="yearly"  onclick="Analytics.setPeriod('yearly')">Annuel</button>
+          </div>
+          <div class="stats-grid" id="analyticsKPIs"></div>
+          <div class="card" style="margin-bottom:var(--sp-4)">
+            <div class="section-title" id="analyticsChartTitle">Dépenses par catégorie</div>
+            <div style="margin-top:var(--sp-4)" id="analyticsChart"></div>
+          </div>
+          <div class="card" style="margin-bottom:var(--sp-4)">
+            <div class="section-title">🏆 Top abonnements</div>
+            <div style="margin-top:var(--sp-3)" id="analyticsTopSubs"></div>
+          </div>
+          <div class="stats-grid" id="analyticsMiniStats"></div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="page" id="page-profile">
+        <div class="page-content">
+          <div class="profile-hero" id="profileHero"></div>
+          <div class="stats-grid" id="profileStats" style="margin-bottom:var(--sp-5)"></div>
+
+          <div class="settings-block">
+            <div class="settings-block-title">Notifications</div>
+            <div id="profileNotifSettings"></div>
+          </div>
+
+          <div class="settings-block">
+            <div class="settings-block-title">Préférences</div>
+            <div class="settings-row" onclick="Profile.changeCurrency()">
+              <span class="settings-icon">💱</span>
+              <span class="settings-label">Devise</span>
+              <span class="settings-value">EUR €</span>
+              <span class="settings-chevron">›</span>
+            </div>
+            <div class="settings-row" onclick="Toast.show('🌐 Langue — bientôt disponible', 'info')">
+              <span class="settings-icon">🌐</span>
+              <span class="settings-label">Langue</span>
+              <span class="settings-value">Français</span>
+              <span class="settings-chevron">›</span>
+            </div>
+            <div class="settings-row" onclick="Profile.exportCSV()">
+              <span class="settings-icon">📤</span>
+              <span class="settings-label">Exporter mes données (CSV)</span>
+              <span class="settings-chevron">›</span>
+            </div>
+          </div>
+
+          <div class="settings-block">
+            <div class="settings-block-title">Compte</div>
+            <div class="settings-row" onclick="Auth.logout()">
+              <span class="settings-icon">🚪</span>
+              <span class="settings-label" style="color:var(--danger)">Se déconnecter</span>
+              <span class="settings-chevron">›</span>
+            </div>
+          </div>
+
+          <div class="version-tag">SubTrack v1.0 · Données stockées localement</div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ── FAB ── -->
+    <button class="fab" onclick="SubModal.openAdd()" title="Ajouter un abonnement">＋</button>
+
+  </div><!-- /screen-app -->
+
+
+  <!-- ══════════════════════════════════════════
+       MODALS
+  ══════════════════════════════════════════ -->
+
+  <!-- Add / Edit -->
+  <div class="modal-overlay" id="modalForm">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="modalFormTitle">Nouvel abonnement</div>
+
+      <div class="form-group">
+        <label class="form-label" for="formSubName">Nom du service</label>
+        <input class="form-input" type="text" id="formSubName"
+               placeholder="ex : Netflix, Spotify, Adobe…">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Icône</label>
+        <div class="emoji-grid" id="emojiPicker"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Couleur d'accent</label>
+        <div class="color-grid" id="colorPicker"></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="formSubAmount">Montant (€)</label>
+          <input class="form-input" type="number" id="formSubAmount"
+                 placeholder="9.99" step="0.01" min="0" inputmode="decimal">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="formSubFreq">Fréquence</label>
+          <select class="form-input" id="formSubFreq">
+            <option value="monthly">Mensuel</option>
+            <option value="yearly">Annuel</option>
+            <option value="weekly">Hebdomadaire</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="formSubCategory">Catégorie</label>
+        <select class="form-input" id="formSubCategory">
+          <option value="Streaming">🎬 Streaming</option>
+          <option value="Musique">🎵 Musique</option>
+          <option value="Jeux">🎮 Jeux vidéo</option>
+          <option value="Productivité">💼 Productivité</option>
+          <option value="Cloud">☁️ Cloud & Stockage</option>
+          <option value="Fitness">💪 Fitness & Santé</option>
+          <option value="Actualités">📰 Actualités & Presse</option>
+          <option value="Éducation">📚 Éducation</option>
+          <option value="Finance">💳 Finance & Banque</option>
+          <option value="Logiciels">🖥️ Logiciels & Dev</option>
+          <option value="Livraison">🚚 Livraison & Courses</option>
+          <option value="Autre">📦 Autre</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="formSubStart">Date de début</label>
+          <input class="form-input" type="date" id="formSubStart">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="formSubRenewal">Prochain renouvellement</label>
+          <input class="form-input" type="date" id="formSubRenewal">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="formSubNote">Note (optionnel)</label>
+        <input class="form-input" type="text" id="formSubNote"
+               placeholder="Compte familial, plan Pro…">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="formSubStatus">Statut</label>
+        <select class="form-input" id="formSubStatus">
+          <option value="active">✅ Actif</option>
+          <option value="trial">🔷 Essai gratuit</option>
+          <option value="paused">⏸️ Suspendu</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="Modal.close('modalForm')">Annuler</button>
+        <button class="btn btn-primary"   onclick="SubModal.save()">Enregistrer</button>
+      </div>
+      <div style="margin-top:var(--sp-3)">
+        <button class="btn btn-danger hidden" id="btnDeleteSub" onclick="SubModal.delete()">
+          🗑️ Supprimer cet abonnement
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail -->
+  <div class="modal-overlay" id="modalDetail">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div class="modal-overlay" id="modalNotifs">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🔔 Notifications</div>
+      <div id="notifList"></div>
+      <div style="margin-top:var(--sp-5)">
+        <button class="btn btn-secondary w-full" onclick="Modal.close('modalNotifs')">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+</div><!-- /app -->
+
+
+<!-- ══════════════════════════════════════════
+     SCRIPTS  (order matters)
+══════════════════════════════════════════ -->
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/subscriptions.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/profile.js"></script>
+
+</body>
+</html>

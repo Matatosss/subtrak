@@ -1,0 +1,130 @@
+<!-- ════════════════════════════════════════
+     SubTrack · Modal Sheets
+     ════════════════════════════════════════ -->
+
+<!-- ── Add / Edit Subscription Modal ── -->
+<div class="modal-overlay" id="modalForm">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalFormTitle">Nouvel abonnement</div>
+
+    <!-- Service name -->
+    <div class="form-group">
+      <label class="form-label" for="formSubName">Nom du service</label>
+      <input class="form-input" type="text" id="formSubName"
+             placeholder="ex : Netflix, Spotify, Adobe…">
+    </div>
+
+    <!-- Emoji picker -->
+    <div class="form-group">
+      <label class="form-label">Icône</label>
+      <div class="emoji-grid" id="emojiPicker"></div>
+    </div>
+
+    <!-- Color picker -->
+    <div class="form-group">
+      <label class="form-label">Couleur d'accent</label>
+      <div class="color-grid" id="colorPicker"></div>
+    </div>
+
+    <!-- Amount + frequency -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="formSubAmount">Montant (€)</label>
+        <input class="form-input" type="number" id="formSubAmount"
+               placeholder="9.99" step="0.01" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="formSubFreq">Fréquence</label>
+        <select class="form-input" id="formSubFreq">
+          <option value="monthly">Mensuel</option>
+          <option value="yearly">Annuel</option>
+          <option value="weekly">Hebdomadaire</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Category -->
+    <div class="form-group">
+      <label class="form-label" for="formSubCategory">Catégorie</label>
+      <select class="form-input" id="formSubCategory">
+        <option value="Streaming">🎬 Streaming</option>
+        <option value="Musique">🎵 Musique</option>
+        <option value="Jeux">🎮 Jeux vidéo</option>
+        <option value="Productivité">💼 Productivité</option>
+        <option value="Cloud">☁️ Cloud & Stockage</option>
+        <option value="Fitness">💪 Fitness & Santé</option>
+        <option value="Actualités">📰 Actualités & Presse</option>
+        <option value="Éducation">📚 Éducation</option>
+        <option value="Finance">💳 Finance & Banque</option>
+        <option value="Logiciels">🖥️ Logiciels & Dev</option>
+        <option value="Livraison">🚚 Livraison & Courses</option>
+        <option value="Autre">📦 Autre</option>
+      </select>
+    </div>
+
+    <!-- Dates -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="formSubStart">Date de début</label>
+        <input class="form-input" type="date" id="formSubStart">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="formSubRenewal">Prochain renouvellement</label>
+        <input class="form-input" type="date" id="formSubRenewal">
+      </div>
+    </div>
+
+    <!-- Note -->
+    <div class="form-group">
+      <label class="form-label" for="formSubNote">Note (optionnel)</label>
+      <input class="form-input" type="text" id="formSubNote"
+             placeholder="Compte familial, plan Pro…">
+    </div>
+
+    <!-- Status -->
+    <div class="form-group">
+      <label class="form-label" for="formSubStatus">Statut</label>
+      <select class="form-input" id="formSubStatus">
+        <option value="active">✅ Actif</option>
+        <option value="trial">🔷 Essai gratuit</option>
+        <option value="paused">⏸️ Suspendu</option>
+      </select>
+    </div>
+
+    <!-- Actions -->
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="Modal.close('modalForm')">Annuler</button>
+      <button class="btn btn-primary"   onclick="SubModal.save()">Enregistrer</button>
+    </div>
+
+    <!-- Delete (edit mode only) -->
+    <div style="margin-top:var(--sp-3)">
+      <button class="btn btn-danger hidden" id="btnDeleteSub" onclick="SubModal.delete()">
+        🗑️ Supprimer cet abonnement
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Detail Modal ── -->
+<div class="modal-overlay" id="modalDetail">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+
+<!-- ── Notifications Modal ── -->
+<div class="modal-overlay" id="modalNotifs">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔔 Notifications</div>
+    <div id="notifList"></div>
+    <div style="margin-top:var(--sp-5)">
+      <button class="btn btn-secondary w-full" onclick="Modal.close('modalNotifs')">Fermer</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<!-- ════════════════════════════════════════
+     SubTrack · Profile Page
+     ════════════════════════════════════════ -->
+<div class="page" id="page-profile">
+  <div class="page-content">
+
+    <!-- Profile hero -->
+    <div class="profile-hero" id="profileHero"></div>
+
+    <!-- Account stats -->
+    <div class="stats-grid" id="profileStats" style="margin-bottom:var(--sp-5)"></div>
+
+    <!-- Notifications -->
+    <div class="settings-block">
+      <div class="settings-block-title">Notifications</div>
+      <div id="profileNotifSettings"></div>
+    </div>
+
+    <!-- Preferences -->
+    <div class="settings-block">
+      <div class="settings-block-title">Préférences</div>
+      <div class="settings-row" onclick="Profile.changeCurrency()">
+        <span class="settings-icon">💱</span>
+        <span class="settings-label">Devise</span>
+        <span class="settings-value">EUR €</span>
+        <span class="settings-chevron">›</span>
+      </div>
+      <div class="settings-row" onclick="Toast.show('🌐 Langue — bientôt disponible', 'info')">
+        <span class="settings-icon">🌐</span>
+        <span class="settings-label">Langue</span>
+        <span class="settings-value">Français</span>
+        <span class="settings-chevron">›</span>
+      </div>
+      <div class="settings-row" onclick="Profile.exportCSV()">
+        <span class="settings-icon">📤</span>
+        <span class="settings-label">Exporter mes données (CSV)</span>
+        <span class="settings-chevron">›</span>
+      </div>
+    </div>
+
+    <!-- Danger zone -->
+    <div class="settings-block">
+      <div class="settings-block-title">Compte</div>
+      <div class="settings-row" onclick="Auth.logout()">
+        <span class="settings-icon">🚪</span>
+        <span class="settings-label" style="color:var(--danger)">Se déconnecter</span>
+        <span class="settings-chevron">›</span>
+      </div>
+    </div>
+
+    <div class="version-tag">SubTrack v1.0 · Toutes données stockées localement</div>
+
+  </div>
+</div>
